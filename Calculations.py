@@ -69,10 +69,13 @@ def tabooSearch(distance_matrix, taboo_length, search_depth):
     for i in range(search_depth):
         new_permutation = getBestNeighbour(permutation, distance_matrix, taboo_list).copy()
         taboo_list[i % taboo_length] = getPermutationDifference(permutation, new_permutation)
+        print('new permutation =', new_permutation)
+        print('swapped ', getPermutationDifference(permutation, new_permutation))
+        print('taboo list =', taboo_list)
         permutation = new_permutation.copy()
     
     print('new perm len', calculateDistance(permutation, distance_matrix))
     return permutation
 
 
-print(tabooSearch([[1, 2, 3, 4], [4, 5, 6, 7], [10, 20, 30, 40], [100, 101, 102, 103]], 1, 100))
+print(tabooSearch([[1, 2, 3, 4], [4, 5, 6, 7], [10, 20, 30, 40], [100, 101, 102, 103]], 3, 10))
