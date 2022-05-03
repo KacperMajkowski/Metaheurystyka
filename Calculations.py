@@ -1,4 +1,12 @@
 
+
+def swapPermutation(permutation, i, j):
+    new_permutation = permutation.copy()
+    new_permutation[i] = permutation[j]
+    new_permutation[j] = permutation[i]
+    return new_permutation
+
+
 def calculateDistance(permutation, distance_matrix):
     
     total_distance = 0
@@ -7,7 +15,11 @@ def calculateDistance(permutation, distance_matrix):
     return total_distance
 
 
-p = [2, 0, 1]
-dm = [[1, 1, 1], [2, 2, 2], [3, 3, 3]]
-
-print(calculateDistance(p, dm))
+def getNeighbors(permutation, taboo_swaps):
+    neighbors = []
+    for i in range(len(permutation) - 1):
+        for j in range(i + 1, len(permutation)):
+            if [i, j] not in taboo_swaps:
+                neighbors.append(swapPermutation(permutation, i, j))
+                
+    return neighbors
