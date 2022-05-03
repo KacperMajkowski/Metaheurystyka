@@ -15,11 +15,25 @@ def calculateDistance(permutation, distance_matrix):
     return total_distance
 
 
-def getNeighbors(permutation, taboo_swaps):
-    neighbors = []
+def getNeighbours(permutation, taboo_swaps):
+    neighbours = []
     for i in range(len(permutation) - 1):
         for j in range(i + 1, len(permutation)):
             if [i, j] not in taboo_swaps:
-                neighbors.append(swapPermutation(permutation, i, j))
+                neighbours.append(swapPermutation(permutation, i, j))
                 
-    return neighbors
+    return neighbours
+
+
+def getBestNeighbour(permutation, distance_matrix, taboo_list):
+    neighbours = getNeighbours(permutation, taboo_list)
+    
+    bestNeighbour = neighbours[0]
+    bestDistance = calculateDistance(bestNeighbour, distance_matrix)
+    for n in neighbours:
+        if calculateDistance(n, distance_matrix) < bestDistance:
+            bestNeighbour = n
+            bestDistance = calculateDistance(bestNeighbour, distance_matrix)
+            
+    return bestNeighbour
+
