@@ -29,7 +29,7 @@ def swapPermutation(permutation, i, j):
 def calculateDistance(permutation, distance_matrix):
     
     total_distance = 0
-    for i in range(len(permutation) - 1):
+    for i in range(len(permutation)):
         total_distance += distance_matrix[permutation[i]][permutation[(i + 1) % len(permutation)]]
     return total_distance
 
@@ -61,7 +61,7 @@ def getBestNeighbour(permutation, distance_matrix, taboo_list):
 
 def tabooSearch(distance_matrix, taboo_length, search_depth):
     permutation = generateRandomPermutation(len(distance_matrix))
-    print('random perm', permutation)
+    print('random perm', permutation, 'len', calculateDistance(permutation, distance_matrix))
     taboo_list = []
     for t in range(taboo_length):
         taboo_list.append([])
@@ -70,8 +70,9 @@ def tabooSearch(distance_matrix, taboo_length, search_depth):
         new_permutation = getBestNeighbour(permutation, distance_matrix, taboo_list).copy()
         taboo_list[i % taboo_length] = getPermutationDifference(permutation, new_permutation)
         permutation = new_permutation.copy()
-        
+    
+    print('new perm len', calculateDistance(permutation, distance_matrix))
     return permutation
 
 
-print(tabooSearch([[1, 2, 3], [1, 2, 3], [1, 2, 3]], 1, 3))
+print(tabooSearch([[1, 2, 3, 4], [4, 5, 6, 7], [10, 20, 30, 40], [100, 101, 102, 103]], 1, 100))
