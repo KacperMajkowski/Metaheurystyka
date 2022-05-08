@@ -63,41 +63,47 @@ def tabooSearch(distance_matrix, taboo_length, before_jump_count, search_depth):
     permutation = generateRandomPermutation(len(distance_matrix))
     print('random perm', permutation, 'len', calculateDistance(permutation, distance_matrix))
     taboo_list = []
-    improvements = []   # [permutation, taboo_list, swap]
-    for t in range(taboo_length):
+    improvements = []   # improvements = [permutation, taboo_list, swap]
+    for t in range(taboo_length):   # Create taboo list
         taboo_list.append([])
     
-    got_worse_solution = 0
+    got_worse_solution_count = 0
     for i in range(search_depth):
         new_permutation = getBestNeighbour(permutation, distance_matrix, taboo_list).copy()
         
+        # At first permutation as best
         if len(improvements) == 0:
             improvements.append([new_permutation, taboo_list, getPermutationDifference(new_permutation, permutation)])
         
         print('swapped ', getPermutationDifference(permutation, new_permutation))
         print('new_permutation', new_permutation, 'length', calculateDistance(new_permutation, distance_matrix),
               'vs permutation', permutation, 'length', calculateDistance(permutation, distance_matrix))
+        
+        # Check if solution got worse
         if calculateDistance(new_permutation, distance_matrix) > calculateDistance(permutation, distance_matrix):
-            got_worse_solution += 1
-            print('Got worse solution', got_worse_solution, 'times')
+            got_worse_solution_count += 1
+            print('Got worse solution', got_worse_solution_count, 'times')
         else:
-            got_worse_solution = 0
-            
+            got_worse_solution_count = 0
+        
+        # Remove additional taboo element after returning
         if len(taboo_list) > taboo_length:
             taboo_list.pop()
-
+        
+        # Replace the last added taboo element
         taboo_list[i % taboo_length] = getPermutationDifference(permutation, new_permutation)
         print('taboo list:', taboo_list)
         
-        if got_worse_solution >= before_jump_count:
+        if got_worse_solution_count >= before_jump_count:     # Should we return to last best solution
             # Returns solution before all swaps in taboo list
             new_permutation = improvements[-1][0]   # Best recorded permutation
             taboo_list = improvements[-1][1]    # Taboo list at that time
             taboo_list.append(improvements[-1][2])  # Forbid going the same way, pop later
+            improvements.pop()                  # Don't return to that point again
             print('returned to', new_permutation)
-            got_worse_solution = 0
+            got_worse_solution_count = 0
         elif calculateDistance(new_permutation, distance_matrix) <\
-                calculateDistance(improvements[-1][0], distance_matrix):
+                calculateDistance(improvements[-1][0], distance_matrix):    # Is new permutation best so far?
             improvements.append([new_permutation, taboo_list, getPermutationDifference(new_permutation, permutation)])
         
         permutation = new_permutation
