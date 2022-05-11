@@ -1,6 +1,7 @@
 import tsplib95
 import networkx
 
+
 def get_distance_matrix(name):
     problem = tsplib95.load(name)
 
@@ -9,5 +10,7 @@ def get_distance_matrix(name):
 
     # convert into a numpy distance matrix
     distance_matrix = networkx.to_numpy_matrix(graph)
-    print(distance_matrix)
     return distance_matrix
+
+
+print(get_distance_matrix('Tsp_problems/berlin52.tsp'))
