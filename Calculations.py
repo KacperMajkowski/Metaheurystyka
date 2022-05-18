@@ -119,3 +119,4 @@ def tabooSearch(distance_matrix, taboo_length, before_jump_count, search_depth):
         permutation = new_permutation.copy()
     
     return best_solution
+
