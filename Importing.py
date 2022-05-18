@@ -7,10 +7,9 @@ def importFile():
     
 
 def askUserForFilename():
-    file_name = input("Podaj nazwę pliku")
+    file_name = input("Podaj nazwę pliku\n")
     distance_matrix = importFile()
     return distance_matrix
 
 
-p = importFile()
-print(p.node_coords)
+print(askUserForFilename())
