@@ -5,8 +5,9 @@ import re
 
 def askUserForFilename():
     file_name = input("Podaj nazwę pliku\n")
-    data_matrix = tsplib95.load('Tsp_problems/' + file_name)
+    data_matrix = tsplib95.load('Problems/' + file_name)
     distance_matrix = get_distance_matrix(data_matrix)
+    # print(distance_matrix)
     return distance_matrix
 
 
@@ -27,14 +28,12 @@ def getNumbersFromString(string):
 
 def get_distance_matrix(problem):
 
-    # convert into a networkx.Graph
-    graph = problem.get_graph()
-    
-    data_matrix = nx.to_numpy_matrix(graph)
     distance_matrix = []
-    for line in data_matrix:
-        line = str(line)
-        distance_line = getNumbersFromString(line)
-        distance_matrix.append(distance_line)
-    
+    for i in list(problem.get_nodes()):
+        distance_matrix.append([])
+        for j in list(problem.get_nodes()):
+            # print(str(i) + "    " + str(j))
+            edge = i, j
+            distance_matrix[i].append(problem.get_weight(*edge))
+    print(distance_matrix)
     return distance_matrix
